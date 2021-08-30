@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\User\CheckoutController;
-use App\Http\Controllers\User\DashboardController as DashboardUser;
+use App\Http\Controllers\User\DashboardController as UserDashboard;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\Admin\CheckoutController as AdminCheckout;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,13 +21,6 @@ use App\Http\Controllers\User\DashboardController as DashboardUser;
 
 Route::get('/', [HomeController::class, 'index'])->name('welcome');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-// auth routes
-Route::get('user-login', [UserController::class, 'login'])->name('user.login');
-
 // socialite routes
 Route::get('sign-in-google', [UserController::class, 'google'])->name('user.login.google');
 Route::get('auth/google/callback', [UserController::class, 'handleProviderCallback'])->name('user.google.callback');
@@ -36,8 +31,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('checkout/{camp:slug}', [CheckoutController::class, 'create'])->name('checkout.create');
     Route::post('checkout/{camp}', [CheckoutController::class, 'store'])->name('checkout.store');
 
+    // user dashboard
+    Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::prefix('user/dashboard')->namespace('User')->group(function () {
-        Route::get('/', [DashboardUser::class, 'index'])->name('user.dashboard');
+        Route::get('/', [UserDashboard::class, 'index'])->name('user.dashboard');
+    });
+
+    // admin dashboard
+    Route::prefix('admin/dashboard')->namespace('Admin')->group(function () {
+        Route::get('/', [AdminDashboard::class, 'index'])->name('admin.dashboard');
+
+        // admin checkout
+        Route::post('checkout/{checkout}', [AdminCheckout::class, 'update'])->name('admin.checkout.update');
     });
 });
 

@@ -24,7 +24,7 @@ class CheckoutController extends Controller
      */
     public function create()
     {
-        //
+        return view('checkout.create');
     }
 
     /**
@@ -81,5 +81,10 @@ class CheckoutController extends Controller
     public function destroy(Checkout $checkout)
     {
         //
+    }
+
+    public function success()
+    {
+        return view('checkout.success');
     }
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,12 +17,17 @@ use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+// auth routes
 Route::get('user-login', [UserController::class, 'login'])->name('user.login');
+
+// checkout routes
+Route::get('checkout/create', [CheckoutController::class, 'create'])->name('checkout.create');
+Route::get('checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
 
 require __DIR__.'/auth.php';

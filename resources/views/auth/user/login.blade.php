@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 text-center">
-                <button class="btn btn-primary mt-4">Sign In with Google</button>
+                <a href="{{route('user.login.google')}}" class="btn btn-primary mt-4">Sign In with Google</a>
             </div>
         </div>
     </div>

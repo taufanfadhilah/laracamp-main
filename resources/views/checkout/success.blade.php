@@ -6,7 +6,7 @@
                 <h1>Berhasil Checkout</h1>
                 <div class="col-4 mx-auto">
                     <div class="d-grid gap-2">
-                        <a href="{{route('welcome')}}" class="btn btn-primary">My Dashboard</a>
+                        <a href="{{route('user.dashboard')}}" class="btn btn-primary">My Dashboard</a>
                     </div>
                 </div>
             </div>

@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\User\DashboardController as DashboardUser;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('checkout/success', [CheckoutController::class, 'success'])->name('checkout.success'); 
     Route::get('checkout/{camp:slug}', [CheckoutController::class, 'create'])->name('checkout.create');
     Route::post('checkout/{camp}', [CheckoutController::class, 'store'])->name('checkout.store');
+
+    Route::prefix('user/dashboard')->namespace('User')->group(function () {
+        Route::get('/', [DashboardUser::class, 'index'])->name('user.dashboard');
+    });
 });
 
 require __DIR__.'/auth.php';

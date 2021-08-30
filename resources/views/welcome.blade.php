@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-center">
-                <h2>Landing Page</h2>
+                <h2>Laracamp</h2>
             </div>
             @foreach ($camps as $camp)
                 <div class="col-md-6">

@@ -17,6 +17,7 @@
                                     <th>Card Number</th>
                                     <th>CVC</th>
                                     <th>Payment Status</th>
+                                    <th>Invoice</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -37,10 +38,13 @@
                                                 <span class="badge bg-warning">Waiting</span>
                                             @endif    
                                         </td>
+                                        <td>
+                                            <a href="{{route('user.checkout.invoice', $checkout->id)}}" class="btn btn-sm btn-info">Get Invoice</a>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="3">No camps registered</td>
+                                        <td colspan="3">No camp registered</td>
                                     </tr>
                                 @endforelse
                             </tbody>

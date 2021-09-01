@@ -112,4 +112,14 @@ class CheckoutController extends Controller
     {
         return view('checkout.success');
     }
+
+    public function invoice(Checkout $checkout)
+    {
+        $checkout->Camp;
+        $checkout->User;
+        
+        return view('checkout.invoice', [
+            'checkout' => $checkout
+        ]);
+    }
 }

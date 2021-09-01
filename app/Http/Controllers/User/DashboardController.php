@@ -16,9 +16,4 @@ class DashboardController extends Controller
             'checkouts' => $checkouts
         ]);
     }
-
-    public function invoice(Checkout $checkout)
-    {
-        return $checkout;
-    }
 }

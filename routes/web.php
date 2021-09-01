@@ -35,7 +35,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::prefix('user/dashboard')->namespace('User')->name('user.')->group(function () {
         Route::get('/', [UserDashboard::class, 'index'])->name('dashboard');
-        Route::get('checkout/invoice/{checkout}', [UserDashboard::class, 'invoice'])->name('checkout.invoice');
+        Route::get('checkout/invoice/{checkout}', [CheckoutController::class, 'invoice'])->name('checkout.invoice');
     });
 
     // admin dashboard

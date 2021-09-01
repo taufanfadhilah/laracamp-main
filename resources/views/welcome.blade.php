@@ -17,9 +17,13 @@
                                     <li>{{$campBenefit->name}}</li>
                                 @endforeach
                             </ul>
-                            <a href="{{route('checkout.create', $camp->slug)}}" class="btn btn-primary">
-                                Subscribe
-                            </a>
+                            @if ($camp->isRegistered)
+                                <button class="btn btn-primary" disabled>Registered</button>    
+                            @else
+                                <a href="{{route('checkout.create', $camp->slug)}}" class="btn btn-primary">
+                                    Subscribe
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>

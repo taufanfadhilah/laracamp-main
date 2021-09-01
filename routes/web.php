@@ -33,16 +33,17 @@ Route::middleware(['auth'])->group(function () {
 
     // user dashboard
     Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
-    Route::prefix('user/dashboard')->namespace('User')->group(function () {
-        Route::get('/', [UserDashboard::class, 'index'])->name('user.dashboard');
+    Route::prefix('user/dashboard')->namespace('User')->name('user.')->group(function () {
+        Route::get('/', [UserDashboard::class, 'index'])->name('dashboard');
+        Route::get('checkout/invoice/{checkout}', [UserDashboard::class, 'invoice'])->name('checkout.invoice');
     });
 
     // admin dashboard
-    Route::prefix('admin/dashboard')->namespace('Admin')->group(function () {
-        Route::get('/', [AdminDashboard::class, 'index'])->name('admin.dashboard');
+    Route::prefix('admin/dashboard')->namespace('Admin')->name('admin.')->group(function () {
+        Route::get('/', [AdminDashboard::class, 'index'])->name('dashboard');
 
         // admin checkout
-        Route::post('checkout/{checkout}', [AdminCheckout::class, 'update'])->name('admin.checkout.update');
+        Route::post('checkout/{checkout}', [AdminCheckout::class, 'update'])->name('checkout.update');
     });
 });
 

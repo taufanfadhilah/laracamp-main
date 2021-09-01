@@ -15,7 +15,7 @@ class Checkout extends Model
 
     public function setExpiredAttribute($value)
     {
-        $this->attributes['expired'] = "$value-31";
+        $this->attributes['expired'] = date('Y-m-t', strtotime($value));
     }
 
     /**

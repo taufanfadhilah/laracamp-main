@@ -27,19 +27,19 @@ Route::get('auth/google/callback', [UserController::class, 'handleProviderCallba
 
 Route::middleware(['auth'])->group(function () {
     // checkout routes
-    Route::get('checkout/success', [CheckoutController::class, 'success'])->name('checkout.success'); 
-    Route::get('checkout/{camp:slug}', [CheckoutController::class, 'create'])->name('checkout.create');
-    Route::post('checkout/{camp}', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('checkout/success', [CheckoutController::class, 'success'])->name('checkout.success')->middleware('ensureUserRole:user');
+    Route::get('checkout/{camp:slug}', [CheckoutController::class, 'create'])->name('checkout.create')->middleware('ensureUserRole:user');
+    Route::post('checkout/{camp}', [CheckoutController::class, 'store'])->name('checkout.store')->middleware('ensureUserRole:user');
 
     // user dashboard
     Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
-    Route::prefix('user/dashboard')->namespace('User')->name('user.')->group(function () {
+    Route::prefix('user/dashboard')->namespace('User')->name('user.')->middleware('ensureUserRole:user')->group(function () {
         Route::get('/', [UserDashboard::class, 'index'])->name('dashboard');
         Route::get('checkout/invoice/{checkout}', [CheckoutController::class, 'invoice'])->name('checkout.invoice');
     });
 
     // admin dashboard
-    Route::prefix('admin/dashboard')->namespace('Admin')->name('admin.')->group(function () {
+    Route::prefix('admin/dashboard')->namespace('Admin')->name('admin.')->middleware('ensureUserRole:admin')->group(function () {
         Route::get('/', [AdminDashboard::class, 'index'])->name('dashboard');
 
         // admin checkout

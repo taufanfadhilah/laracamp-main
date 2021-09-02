@@ -8,6 +8,7 @@
                         My Camps
                     </div>
                     <div class="card-body">
+                        @include('components.alert')
                         <table class="table">
                             <thead>
                                 <tr>

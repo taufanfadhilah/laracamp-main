@@ -23,7 +23,7 @@
             </ul>
             <div class="d-flex">
                 @auth
-                    <a href="{{route('user.dashboard')}}" class="btn btn-master btn-secondary me-3">
+                    {{-- <a href="{{route('user.dashboard')}}" class="btn btn-master btn-secondary me-3">
                         My Dashboard
                     </a>
                     <a class="btn btn-master btn-primary" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -31,7 +31,13 @@
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    </form>
+                    </form> --}}
+                    <div class="d-flex user-logged">
+                        <a href="#">
+                            Halo, {{Auth::user()->name}}!
+                            <img src="{{Auth::user()->avatar}}" class="user-photo" alt="" style="border-radius: 50%">
+                        </a>
+                    </div>
                 @else
                     <a href="{{route('login')}}" class="btn btn-master btn-secondary me-3">
                         Sign In

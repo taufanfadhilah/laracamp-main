@@ -23,20 +23,19 @@
             </ul>
             <div class="d-flex">
                 @auth
-                    {{-- <a href="{{route('user.dashboard')}}" class="btn btn-master btn-secondary me-3">
-                        My Dashboard
-                    </a>
-                    <a class="btn btn-master btn-primary" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Sign Out
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    </form> --}}
-                    <div class="d-flex user-logged">
-                        <a href="#">
-                            Halo, {{Auth::user()->name}}!
-                            <img src="{{Auth::user()->avatar}}" class="user-photo" alt="" style="border-radius: 50%">
-                        </a>
+                    <div class="d-flex user-logged nav-item dropdown no-arrow">
+                        <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        Halo, {{Auth::user()->name}}!
+                        <img src="{{Auth::user()->avatar}}" class="user-photo" alt="" style="border-radius: 50%">
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="right: 0; left: auto">
+                            <li><a class="dropdown-item" href="{{route('user.dashboard')}}">My Dashboard</a></li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sign Out</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                </form>
+                            </li>
+                        </ul>
                     </div>
                 @else
                     <a href="{{route('login')}}" class="btn btn-master btn-secondary me-3">

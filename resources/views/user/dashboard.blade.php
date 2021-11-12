@@ -40,6 +40,11 @@
                                     @endif    
                                 </td>
                                 <td>
+                                    <a href="{{$checkout->midtrans_url}}" class="btn btn-primary">
+                                        Pay Here
+                                    </a>
+                                </td>
+                                <td>
                                     <a href="https://wa.me/08xxxxxxxx/?text=hi, saya ingin bertanya tentang kelas {{$checkout->Camp->title}}" class="btn btn-primary">
                                         Contact Support
                                     </a>

@@ -220,4 +220,58 @@ class CheckoutController extends Controller
             return false;
         }
     }
+
+    public function midtransCallback(Request $request)
+    {
+        $notif = new Midtrans\Notification();
+
+        $transaction_status = $notif->transaction_status;
+        $fraud = $notif->fraud_status;
+
+        $checkout_id = explode('-', $notif->order_id)[0];
+        $checkout = Checkout::find($checkout_id);
+
+        if ($transaction_status == 'capture') {
+            if ($fraud == 'challenge') {
+            // TODO Set payment status in merchant's database to 'challenge'
+                $checkout->status = 'pending';
+            }
+            else if ($fraud == 'accept') {
+            // TODO Set payment status in merchant's database to 'success'
+                $checkout->status = 'paid';
+                $checkout->User->update();
+            }
+        }
+        else if ($transaction_status == 'cancel') {
+            if ($fraud == 'challenge') {
+            // TODO Set payment status in merchant's database to 'failure'
+            $checkout->status = 'failed';
+            }
+            else if ($fraud == 'accept') {
+            // TODO Set payment status in merchant's database to 'failure'
+            $checkout->status = 'failed';
+            }
+        }
+        else if ($transaction_status == 'deny') {
+            // TODO Set payment status in merchant's database to 'failure'
+            $checkout->status = 'failed';
+        }
+        else if ($transaction_status == 'settlement') {
+            // TODO set payment status in merchant's database to 'Settlement'
+            $checkout->status = 'paid';
+            $checkout->User->update();
+        }
+        else if ($transaction_status == 'pending') {
+            // TODO set payment status in merchant's database to 'Pending'
+            $checkout->status = 'pending';
+        }
+        else if ($transaction_status == 'expire') {
+            // TODO set payment status in merchant's database to 'expire'
+            $checkout->status = 'failed';
+        }
+
+        $checkout->save();
+        // return view('midtrans/finish');
+        return 'success';
+    }
 }

@@ -270,7 +270,6 @@ class CheckoutController extends Controller
         }
 
         $checkout->save();
-        // return view('midtrans/finish');
-        return 'success';
+        return view('checkout/success');
     }
 }

@@ -9,7 +9,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $checkouts = Checkout::with(['Camp', 'User'])->orderBy('is_paid', 'asc')->get();
+        $checkouts = Checkout::with(['Camp', 'User'])->get();
         return view('admin.dashboard', [
             'checkouts' => $checkouts
         ]);

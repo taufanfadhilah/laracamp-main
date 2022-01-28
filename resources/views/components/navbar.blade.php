@@ -26,9 +26,14 @@
                     <div class="d-flex user-logged nav-item dropdown no-arrow">
                         <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                         Halo, {{Auth::user()->name}}!
-                        <img src="{{Auth::user()->avatar}}" class="user-photo" alt="" style="border-radius: 50%">
+                        <img src="{{Auth::user()->avatar ?? "https://ui-avatars.com/api/?name=".Auth::user()->name}}" class="user-photo" alt="" style="border-radius: 50%">
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="right: 0; left: auto">
-                            <li><a class="dropdown-item" href="{{route('user.dashboard')}}">My Dashboard</a></li>
+                            @if (Auth::user()->is_admin)
+                                <li><a class="dropdown-item" href="{{route('admin.dashboard')}}">My Dashboard</a></li>
+                                <li><a class="dropdown-item" href="{{route('admin.discount.index')}}">Discount</a></li>
+                            @else
+                                <li><a class="dropdown-item" href="{{route('user.dashboard')}}">My Dashboard</a></li>
+                            @endif
                             <li>
                                 <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sign Out</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

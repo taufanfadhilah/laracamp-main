@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Checkout;
 use Illuminate\Http\Request;
 use App\Models\Camp;
+use App\Models\Discount;
 use App\Http\Requests\User\Checkout\Store;
 use App\Mail\Checkout\AfterCheckout;
 use Auth;
@@ -77,6 +78,12 @@ class CheckoutController extends Controller
         $user->save();
 
         // create checkout
+        if ($request->discount) {
+            $discount = Discount::whereCode($request->discount)->first();
+            $data['discount_id'] = $discount->id;
+            $data['discount_percentage'] = $discount->percentage;
+        }
+
         $checkout = Checkout::create($data);
         $this->getSnapRedirect($checkout);
 
@@ -154,20 +161,33 @@ class CheckoutController extends Controller
             'midtrans_booking_code' => $checkout->id.'-'.Str::random(5)
         ]);
 
-        // Fill transaction details
-        $transaction_details = array(
-            'order_id' => $checkout->midtrans_booking_code,
-            'gross_amount' => $checkout->Camp->price * 1000
-        );
-
         // Mandatory for Mandiri bill payment and BCA KlikPay
         // Optional for other payment methods
+        $campPrice = $checkout->Camp->price * 1000;
         $item_details[] = [
             "id" => $checkout->midtrans_booking_code,
-            "price" => $checkout->Camp->price * 1000,
+            "price" => $campPrice,
             "quantity" => 1,
             "name" => "Payment for {$checkout->Camp->title} Camp"
         ];
+
+        $discountPrice = 0;
+        if ($checkout->Discount) {
+            $discountPrice = $campPrice * $checkout->discount_percentage / 100;
+            $item_details[] = [
+                "id" => $checkout->Discount->code,
+                "price" => -$discountPrice,
+                "quantity" => 1,
+                "name" => "Discount {$checkout->Discount->name} ({$checkout->discount_percentage}%)"
+            ];
+        }
+
+        // Fill transaction details
+        $total = $campPrice - $discountPrice;
+        $transaction_details = array(
+            'order_id' => $checkout->midtrans_booking_code,
+            'gross_amount' => $total
+        );
 
         // Optional
         $billing_address = array(
@@ -210,6 +230,7 @@ class CheckoutController extends Controller
             // Get Snap Payment Page URL
             $paymentUrl = \Midtrans\Snap::createTransaction($params)->redirect_url;
             $checkout->midtrans_url = $paymentUrl;
+            $checkout->total = $total;
             $checkout->save();
 
             // Send to Snap Payment Page
